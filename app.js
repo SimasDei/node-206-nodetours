@@ -12,24 +12,12 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-/**
- * @route - tours
- * @request - GET
- * @action  - Get all tours
- */
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
   res
     .status(200)
     .json({ success: true, results: tours.length, data: { tours } });
-});
-
-/**
- * @route - tours
- * @request - GET
- * @action - Get single tour
- * @param {Number} id [id=3]  - tour id
- */
-app.get('/api/v1/tours/:id', (req, res) => {
+};
+const getTour = (req, res) => {
   const { id } = req.params;
   if (id > tours.length) {
     return res.status(404).json({ success: false, msg: 'No tour found' });
@@ -37,15 +25,8 @@ app.get('/api/v1/tours/:id', (req, res) => {
 
   const tour = tours.find(tour => tour.id === parseInt(id, 10));
   res.status(200).json({ success: true, data: { tour } });
-});
-
-/**
- * @route - tours
- * @request - POST
- * @action - create a new tour
- * @param {Object} newTour [newTour={}]
- */
-app.post('/api/v1/tours', (req, res) => {
+};
+const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
 
@@ -59,16 +40,8 @@ app.post('/api/v1/tours', (req, res) => {
         .json({ success: true, results: tours.length, data: { tours } });
     }
   );
-});
-
-/**
- * @route - tours
- * @request - PATCH
- * @action - create a new tour
- * @param {Number} id [id=33]
- * @param {Object} tour [tour={title:lol}]
- */
-app.patch('/api/v1/tours/:id', (req, res) => {
+};
+const updateTour = (req, res) => {
   const { id } = req.params;
   const tour = tours.find(tour => tour.id === parseInt(id, 10));
 
@@ -76,15 +49,8 @@ app.patch('/api/v1/tours/:id', (req, res) => {
     return res.status(200).json({ success: true, data: { tour } });
   } else
     return res.status(404).json({ success: false, msg: 'No such tour found' });
-});
-
-/**
- * @route - tours
- * @request - DELETE
- * @action - delete a tour
- * @param {Number} id [id=33]
- */
-app.delete('/api/v1/tours/:id', (req, res) => {
+};
+const deleteTour = (req, res) => {
   const { id } = req.params;
   const tour = tours.find(tour => tour.id === parseInt(id, 10));
 
@@ -92,7 +58,41 @@ app.delete('/api/v1/tours/:id', (req, res) => {
     return res.status(200).json({ success: true, data: null });
   } else
     return res.status(404).json({ success: false, msg: 'No such tour found' });
-});
+};
+
+/**
+ * @route - tours
+ * @request - GET
+ * @action  - Get all tours
+ */
+/**
+ * @route - tours
+ * @request - POST
+ * @action - create a new tour
+ * @param {Object} newTour [newTour={}]
+ */
+app.route('/api/v1/tours').get(getAllTours).post(createTour)
+
+/**
+ * @route - tours
+ * @request - GET
+ * @action - Get single tour
+ * @param {Number} id [id=3]  - tour id
+ */
+/**
+ * @route - tours
+ * @request - PATCH
+ * @action - create a new tour
+ * @param {Number} id [id=33]
+ * @param {Object} tour [tour={title:lol}]
+ */
+/**
+ * @route - tours
+ * @request - DELETE
+ * @action - delete a tour
+ * @param {Number} id [id=33]
+ */
+app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
 const PORT = 3000;
 
