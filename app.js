@@ -43,6 +43,7 @@ app.get('/api/v1/tours/:id', (req, res) => {
  * @route - tours
  * @request - POST
  * @action - create a new tour
+ * @param {Object} newTour [newTour={}]
  */
 app.post('/api/v1/tours', (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
@@ -58,6 +59,39 @@ app.post('/api/v1/tours', (req, res) => {
         .json({ success: true, results: tours.length, data: { tours } });
     }
   );
+});
+
+/**
+ * @route - tours
+ * @request - PATCH
+ * @action - create a new tour
+ * @param {Number} id [id=33]
+ * @param {Object} tour [tour={title:lol}]
+ */
+app.patch('/api/v1/tours/:id', (req, res) => {
+  const { id } = req.params;
+  const tour = tours.find(tour => tour.id === parseInt(id, 10));
+
+  if (tour) {
+    return res.status(200).json({ success: true, data: { tour } });
+  } else
+    return res.status(404).json({ success: false, msg: 'No such tour found' });
+});
+
+/**
+ * @route - tours
+ * @request - DELETE
+ * @action - delete a tour
+ * @param {Number} id [id=33]
+ */
+app.delete('/api/v1/tours/:id', (req, res) => {
+  const { id } = req.params;
+  const tour = tours.find(tour => tour.id === parseInt(id, 10));
+
+  if (tour) {
+    return res.status(200).json({ success: true, data: null });
+  } else
+    return res.status(404).json({ success: false, msg: 'No such tour found' });
 });
 
 const PORT = 3000;
