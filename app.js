@@ -1,21 +1,33 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  console.log('Ahoy sailor o/ ')
-  next();
-});
+/**
+ * @middlewares
+ */
+app.use(morgan('dev'));
 
 /**
- * @data - Tour data
+ * @resource - Tour data
  */
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
+
+/**
+ * 
+ * @resource - Users data
+ */
+const users = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/users.json`));
+
+
+/**
+ * @routes
+ */
 
 const getAllTours = (req, res) => {
   res
@@ -65,6 +77,27 @@ const deleteTour = (req, res) => {
     return res.status(404).json({ success: false, msg: 'No such tour found' });
 };
 
+const getAllUsers = (req, res) => {
+  res
+    .status(200)
+    .json({ success: true, results: users.length, data: { users } });
+};
+const createUser = (req, res) => {
+  const newId = users[users.length - 1].id + 1;
+  const newUser = Object.assign({ id: newId }, req.body);
+
+  users.push(newUser);
+  fs.writeFile(
+    `${__dirname}/dev-data/data/users.json`,
+    JSON.stringify(users),
+    err => {
+      res
+        .status(201)
+        .json({ success: true, results: users.length, data: { users } });
+    }
+  );
+};
+
 /**
  * @route - tours
  * @request - GET
@@ -99,8 +132,24 @@ app.route('/api/v1/tours').get(getAllTours).post(createTour)
  */
 app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
-const PORT = 3000;
 
+/**
+ * @route - users
+ * @request - GET
+ * @action  - Get all users
+ */
+/**
+ * @route - users
+ * @request - POST
+ * @action - create a new user
+ * @param {Object} newUser [newUser={}]
+ */
+app.route('/api/v1/users').get(getAllUsers).post(createUser)
+
+/**
+ * @server
+ */
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(
     `Ahoy Sailor o/. Server is runnin' on http://localhost:${PORT}  ⛵`
