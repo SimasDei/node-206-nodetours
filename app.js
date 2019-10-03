@@ -5,6 +5,11 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log('Ahoy sailor o/ ')
+  next();
+});
+
 /**
  * @data - Tour data
  */
@@ -98,6 +103,6 @@ const PORT = 3000;
 
 app.listen(PORT, () => {
   console.log(
-    `Ahoy Sailor o/. Server is runnin' on port ${PORT} http://localhost:3000`
+    `Ahoy Sailor o/. Server is runnin' on http://localhost:${PORT}  ⛵`
   );
 });
