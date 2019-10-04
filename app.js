@@ -34,15 +34,6 @@ const getAllTours = (req, res) => {
     .status(200)
     .json({ success: true, results: tours.length, data: { tours } });
 };
-const getTour = (req, res) => {
-  const { id } = req.params;
-  if (id > tours.length) {
-    return res.status(404).json({ success: false, msg: 'No tour found' });
-  }
-
-  const tour = tours.find(tour => tour.id === parseInt(id, 10));
-  res.status(200).json({ success: true, data: { tour } });
-};
 const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
@@ -57,6 +48,15 @@ const createTour = (req, res) => {
         .json({ success: true, results: tours.length, data: { tours } });
     }
   );
+};
+const getTour = (req, res) => {
+  const { id } = req.params;
+  if (id > tours.length) {
+    return res.status(404).json({ success: false, msg: 'No tour found' });
+  }
+
+  const tour = tours.find(tour => tour.id === parseInt(id, 10));
+  res.status(200).json({ success: true, data: { tour } });
 };
 const updateTour = (req, res) => {
   const { id } = req.params;
@@ -96,6 +96,34 @@ const createUser = (req, res) => {
         .json({ success: true, results: users.length, data: { users } });
     }
   );
+};
+
+const getUser = (req, res) => {
+  const { id } = req.params;
+  if (id > users.length) {
+    return res.status(404).json({ success: false, msg: 'No user found' });
+  }
+
+  const user = users.find(user => user.id === parseInt(id, 10));
+  res.status(200).json({ success: true, data: { user } });
+};
+const updateUser = (req, res) => {
+  const { id } = req.params;
+  const user = users.find(user => user.id === parseInt(id, 10));
+
+  if (user) {
+    return res.status(200).json({ success: true, data: { user } });
+  } else
+    return res.status(404).json({ success: false, msg: 'No such user found' });
+};
+const deleteUser = (req, res) => {
+  const { id } = req.params;
+  const user = users.find(user => user.id === parseInt(id, 10));
+
+  if (user) {
+    return res.status(200).json({ success: true, data: null });
+  } else
+    return res.status(404).json({ success: false, msg: 'No such user found' });
 };
 
 /**
@@ -145,6 +173,27 @@ app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
  * @param {Object} newUser [newUser={}]
  */
 app.route('/api/v1/users').get(getAllUsers).post(createUser)
+
+/**
+ * @route - users
+ * @request - GET
+ * @action - Get single user
+ * @param {Number} id [id=3]  - user id
+ */
+/**
+ * @route - users
+ * @request - PATCH
+ * @action - create a new user
+ * @param {Number} id [id=33]
+ * @param {Object} user [user={title:lol}]
+ */
+/**
+ * @route - users
+ * @request - DELETE
+ * @action - delete a user
+ * @param {Number} id [id=33]
+ */
+app.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
 
 /**
  * @server
