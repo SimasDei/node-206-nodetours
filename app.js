@@ -24,11 +24,10 @@ const tours = JSON.parse(
  */
 const users = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/users.json`));
 
-
 /**
  * @routes
  */
-
+const tourRouter = express.Router();
 const getAllTours = (req, res) => {
   res
     .status(200)
@@ -76,7 +75,9 @@ const deleteTour = (req, res) => {
   } else
     return res.status(404).json({ success: false, msg: 'No such tour found' });
 };
+app.use('/api/v1/tours', tourRouter)
 
+const userRouter = express.Router();
 const getAllUsers = (req, res) => {
   res
     .status(200)
@@ -97,7 +98,6 @@ const createUser = (req, res) => {
     }
   );
 };
-
 const getUser = (req, res) => {
   const { id } = req.params;
   if (id > users.length) {
@@ -125,6 +125,8 @@ const deleteUser = (req, res) => {
   } else
     return res.status(404).json({ success: false, msg: 'No such user found' });
 };
+app.use('/api/v1/tours', userRouter)
+
 
 /**
  * @route - tours
@@ -137,7 +139,7 @@ const deleteUser = (req, res) => {
  * @action - create a new tour
  * @param {Object} newTour [newTour={}]
  */
-app.route('/api/v1/tours').get(getAllTours).post(createTour)
+tourRouter.route('/').get(getAllTours).post(createTour)
 
 /**
  * @route - tours
@@ -158,7 +160,7 @@ app.route('/api/v1/tours').get(getAllTours).post(createTour)
  * @action - delete a tour
  * @param {Number} id [id=33]
  */
-app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
 
 /**
@@ -172,7 +174,7 @@ app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
  * @action - create a new user
  * @param {Object} newUser [newUser={}]
  */
-app.route('/api/v1/users').get(getAllUsers).post(createUser)
+userRouter.route('/').get(getAllUsers).post(createUser)
 
 /**
  * @route - users
@@ -193,7 +195,7 @@ app.route('/api/v1/users').get(getAllUsers).post(createUser)
  * @action - delete a user
  * @param {Number} id [id=33]
  */
-app.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
 
 /**
  * @server
