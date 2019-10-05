@@ -19,10 +19,12 @@ const tours = JSON.parse(
 );
 
 /**
- * 
+ *
  * @resource - Users data
  */
-const users = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/users.json`));
+const users = JSON.parse(
+  fs.readFileSync(`${__dirname}/dev-data/data/users.json`)
+);
 
 /**
  * @routes
@@ -76,7 +78,7 @@ const deleteTour = (req, res) => {
   } else
     return res.status(404).json({ success: false, msg: 'No such tour found' });
 };
-app.use('/api/v1/tours', tourRouter)
+app.use('/api/v1/tours', tourRouter);
 
 /**
  * @route - tours
@@ -89,7 +91,10 @@ app.use('/api/v1/tours', tourRouter)
  * @action - create a new tour
  * @param {Object} newTour [newTour={}]
  */
-tourRouter.route('/').get(getAllTours).post(createTour)
+tourRouter
+  .route('/')
+  .get(getAllTours)
+  .post(createTour);
 
 /**
  * @route - tours
@@ -110,7 +115,11 @@ tourRouter.route('/').get(getAllTours).post(createTour)
  * @action - delete a tour
  * @param {Number} id [id=33]
  */
-tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
+tourRouter
+  .route('/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 /**
  * @routes
@@ -164,7 +173,7 @@ const deleteUser = (req, res) => {
   } else
     return res.status(404).json({ success: false, msg: 'No such user found' });
 };
-app.use('/api/v1/tours', userRouter)
+app.use('/api/v1/tours', userRouter);
 
 /**
  * @route - users
@@ -177,7 +186,10 @@ app.use('/api/v1/tours', userRouter)
  * @action - create a new user
  * @param {Object} newUser [newUser={}]
  */
-userRouter.route('/').get(getAllUsers).post(createUser)
+userRouter
+  .route('/')
+  .get(getAllUsers)
+  .post(createUser);
 
 /**
  * @route - users
@@ -198,7 +210,11 @@ userRouter.route('/').get(getAllUsers).post(createUser)
  * @action - delete a user
  * @param {Number} id [id=33]
  */
-userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
+userRouter
+  .route('/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 /**
  * @server
