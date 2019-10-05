@@ -26,6 +26,7 @@ const users = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/users.json`
 
 /**
  * @routes
+ * @route - Tours
  */
 const tourRouter = express.Router();
 const getAllTours = (req, res) => {
@@ -77,6 +78,44 @@ const deleteTour = (req, res) => {
 };
 app.use('/api/v1/tours', tourRouter)
 
+/**
+ * @route - tours
+ * @request - GET
+ * @action  - Get all tours
+ */
+/**
+ * @route - tours
+ * @request - POST
+ * @action - create a new tour
+ * @param {Object} newTour [newTour={}]
+ */
+tourRouter.route('/').get(getAllTours).post(createTour)
+
+/**
+ * @route - tours
+ * @request - GET
+ * @action - Get single tour
+ * @param {Number} id [id=3]  - tour id
+ */
+/**
+ * @route - tours
+ * @request - PATCH
+ * @action - create a new tour
+ * @param {Number} id [id=33]
+ * @param {Object} tour [tour={title:lol}]
+ */
+/**
+ * @route - tours
+ * @request - DELETE
+ * @action - delete a tour
+ * @param {Number} id [id=33]
+ */
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
+
+/**
+ * @routes
+ * @route - Users
+ */
 const userRouter = express.Router();
 const getAllUsers = (req, res) => {
   res
@@ -126,42 +165,6 @@ const deleteUser = (req, res) => {
     return res.status(404).json({ success: false, msg: 'No such user found' });
 };
 app.use('/api/v1/tours', userRouter)
-
-
-/**
- * @route - tours
- * @request - GET
- * @action  - Get all tours
- */
-/**
- * @route - tours
- * @request - POST
- * @action - create a new tour
- * @param {Object} newTour [newTour={}]
- */
-tourRouter.route('/').get(getAllTours).post(createTour)
-
-/**
- * @route - tours
- * @request - GET
- * @action - Get single tour
- * @param {Number} id [id=3]  - tour id
- */
-/**
- * @route - tours
- * @request - PATCH
- * @action - create a new tour
- * @param {Number} id [id=33]
- * @param {Object} tour [tour={title:lol}]
- */
-/**
- * @route - tours
- * @request - DELETE
- * @action - delete a tour
- * @param {Number} id [id=33]
- */
-tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour)
-
 
 /**
  * @route - users
