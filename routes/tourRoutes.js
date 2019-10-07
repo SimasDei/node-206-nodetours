@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 
+const router = express.Router();
 
 /**
  * @resource - Tour data
@@ -9,11 +10,6 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
-/**
- * @routes
- * @route - Tours
- */
-const tourRouter = express.Router();
 const getAllTours = (req, res) => {
   res
     .status(200)
@@ -73,7 +69,7 @@ const deleteTour = (req, res) => {
  * @action - create a new tour
  * @param {Object} newTour [newTour={}]
  */
-tourRouter
+router
   .route('/')
   .get(getAllTours)
   .post(createTour);
@@ -97,10 +93,10 @@ tourRouter
  * @action - delete a tour
  * @param {Number} id [id=33]
  */
-tourRouter
+router
   .route('/:id')
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
 
-  module.express = tourRouter;
+  module.exports = router;

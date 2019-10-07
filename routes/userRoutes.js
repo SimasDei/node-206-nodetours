@@ -1,6 +1,8 @@
 const express = require('express');
 const fs = require('fs');
 
+const router = express.Router();
+
 /**
  * @resource - Users data
  */
@@ -8,11 +10,6 @@ const users = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/users.json`)
 );
 
-/**
- * @routes
- * @route - Users
- */
-const userRouter = express.Router();
 const getAllUsers = (req, res) => {
   res
     .status(200)
@@ -72,7 +69,7 @@ const deleteUser = (req, res) => {
  * @action - create a new user
  * @param {Object} newUser [newUser={}]
  */
-userRouter
+router
   .route('/')
   .get(getAllUsers)
   .post(createUser);
@@ -96,10 +93,10 @@ userRouter
  * @action - delete a user
  * @param {Number} id [id=33]
  */
-userRouter
+router
   .route('/:id')
   .get(getUser)
   .patch(updateUser)
   .delete(deleteUser);
 
-  module.exports = userRouter;
+  module.exports = router;
