@@ -152,12 +152,12 @@ const getUser = (req, res) => {
     return res.status(404).json({ success: false, msg: 'No user found' });
   }
 
-  const user = users.find(user => user.id === parseInt(id, 10));
+  const user = users.find(user => user._id === id);
   res.status(200).json({ success: true, data: { user } });
 };
 const updateUser = (req, res) => {
   const { id } = req.params;
-  const user = users.find(user => user.id === parseInt(id, 10));
+  const user = users.find(user => user._id === id);
 
   if (user) {
     return res.status(200).json({ success: true, data: { user } });
@@ -166,14 +166,14 @@ const updateUser = (req, res) => {
 };
 const deleteUser = (req, res) => {
   const { id } = req.params;
-  const user = users.find(user => user.id === parseInt(id, 10));
+  const user = users.find(user => user._id === id);
 
   if (user) {
     return res.status(200).json({ success: true, data: null });
   } else
     return res.status(404).json({ success: false, msg: 'No such user found' });
 };
-app.use('/api/v1/tours', userRouter);
+app.use('/api/v1/users', userRouter);
 
 /**
  * @route - users
