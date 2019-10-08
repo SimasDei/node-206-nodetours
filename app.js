@@ -19,12 +19,4 @@ app.use(morgan('dev'));
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-/**
- * @server
- */
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(
-    `Ahoy Sailor o/. Server is runnin' on http://localhost:${PORT}  ⛵`
-  );
-});
+module.exports = app;

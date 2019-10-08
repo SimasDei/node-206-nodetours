@@ -3,8 +3,6 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-
-
 /**
  * @route - users
  * @request - GET
@@ -46,4 +44,4 @@ router
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
-  module.exports = router;
+module.exports = router;
