@@ -57,7 +57,6 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     runValidators: true
   });
   if (!updateTour) return next(new AppError('No such tour found', 404));
-
   res.status(201).json({
     status: 'success',
     data: {
