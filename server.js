@@ -17,9 +17,9 @@ mongoose
     useFindAndModify: false,
     useUnifiedTopology: true
   })
-  .then(() => console.log('Connected to the Database 🎉 ✨'));
+  .then(() => console.log('Connected to the Database 🎉. ✨.'));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`App running on  http://localhost:${port} 🎈  🎆  🎇`);
+  console.log(`App running on  http://localhost:${port} 🎈.  🎆.  🎇.`);
 });
