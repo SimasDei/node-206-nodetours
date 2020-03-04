@@ -33,7 +33,9 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide a valid email and password', 400));
   }
 
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email }).select('+password');
+
+  console.log(user);
 
   const token = '^';
   res.status(200).json({
