@@ -10,40 +10,40 @@ const tourSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       maxLength: [40, 'A tour name must not exceed 40 characters'],
-      minLength: [10, 'A tour name must have a minimum of 10 characters']
+      minLength: [10, 'A tour name must have a minimum of 10 characters'],
     },
     slug: {
-      type: String
+      type: String,
     },
     duration: {
       type: Number,
-      required: [true, 'A tour must have a duration']
+      required: [true, 'A tour must have a duration'],
     },
     maxGroupSize: {
       type: Number,
-      required: [true, 'A tour must have a group size']
+      required: [true, 'A tour must have a group size'],
     },
     difficulty: {
       type: String,
       required: [true, 'A tour must have a difficulty'],
       enum: {
         values: ['easy', 'medium', 'difficult'],
-        message: 'Must choose between easy, medium, or difficult'
-      }
+        message: 'Must choose between easy, medium, or difficult',
+      },
     },
     ratingsAverage: {
       type: Number,
       default: 4.5,
       min: [1, 'Rating must be between 1 and 5'],
-      max: [5, 'Rating must be between 1 and 5']
+      max: [5, 'Rating must be between 1 and 5'],
     },
     ratingsQuantity: {
       type: Number,
-      default: 0
+      default: 0,
     },
     price: {
       type: Number,
-      required: [true, 'A tour price is required']
+      required: [true, 'A tour price is required'],
     },
     priceDiscount: {
       type: Number,
@@ -51,39 +51,39 @@ const tourSchema = new mongoose.Schema(
         validator: function(value) {
           return value < this.price;
         },
-        message: 'Discount can not be higher than the price ({VALUE})'
-      }
+        message: 'Discount can not be higher than the price ({VALUE})',
+      },
     },
     summary: {
       type: String,
       required: [true, 'A tour must have a description'],
-      trim: true
+      trim: true,
     },
     description: {
       type: String,
-      trim: true
+      trim: true,
     },
     imageCover: {
       type: String,
-      required: [true, 'A tour must have an image']
+      required: [true, 'A tour must have an image'],
     },
     images: {
-      type: [String]
+      type: [String],
     },
     createdAt: {
       type: Date,
       default: Date.now(),
-      select: false
+      select: false,
     },
     startDates: [Date],
     secretTour: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   {
     toJSON: { virtuals: true },
-    toOBJ: { virtuals: true }
+    toOBJ: { virtuals: true },
   }
 );
 
