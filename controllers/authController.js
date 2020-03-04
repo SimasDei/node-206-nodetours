@@ -12,12 +12,13 @@ const signToken = id => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const { name, email, password, passwordConfirm } = req.body;
+  const { name, email, password, passwordConfirm, passwordChangedAt } = req.body;
   const newUser = await User.create({
     name,
     email,
     password,
     passwordConfirm,
+    passwordChangedAt,
   });
 
   const token = signToken(newUser._id);
@@ -65,7 +66,16 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!token) return next(new AppError('Please login first', 401));
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log({ decoded });
 
+  const hydratedUser = await User.findById(decoded.id);
+  if (!hydratedUser) {
+    return next(new AppError('The user no longer exists', 401));
+  }
+
+  if (hydratedUser.changedPasswordAfter(decoded.iat)) {
+    return next(new AppError('User recently changed their password', 401));
+  }
+
+  req.user = hydratedUser;
   next();
 });
