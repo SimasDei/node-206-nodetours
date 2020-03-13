@@ -28,7 +28,10 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 });
 
 exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id);
+  const tour = await Tour.findById(req.params.id).populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
 
   if (!tour) return next(new AppError('No such tour found', 404));
 
