@@ -111,7 +111,7 @@ const tourSchema = new mongoose.Schema(
   },
   {
     toJSON: { virtuals: true },
-    toOBJ: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
@@ -143,10 +143,10 @@ tourSchema.pre('aggregate', function(next) {
   next();
 });
 
-// tourSchema.post(/^find/, function(docs, next) {
-//   console.log(`Query took ${Date.now() - this.start} miliseconds ⏰`);
-//   next();
-// });
+tourSchema.post(/^find/, function(docs, next) {
+  console.log(`Query took ${Date.now() - this.start} miliseconds ⏰`);
+  next();
+});
 
 const Tour = mongoose.model('Tour', tourSchema);
 
