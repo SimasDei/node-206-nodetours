@@ -51,21 +51,7 @@ exports.createTour = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateTour = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const updateTour = await Tour.findByIdAndUpdate(id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (!updateTour) return next(new AppError('No such tour found', 404));
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: updateTour,
-    },
-  });
-});
-
+exports.updateTour = factory.updateOne(Tour);
 exports.deleteTour = factory.deleteOne(Tour);
 
 exports.getTourStats = catchAsync(async (req, res, next) => {

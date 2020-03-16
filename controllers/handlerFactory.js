@@ -7,8 +7,24 @@ exports.deleteOne = Model =>
     const document = await Model.findByIdAndDelete(id);
     if (!document) return next(new AppError('No such document found', 404));
 
-    res.status(201).json({
+    res.status(204).json({
       status: 'success',
       data: null,
+    });
+  });
+
+exports.updateOne = Model =>
+  catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const document = await Model.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!document) return next(new AppError('No such document found', 404));
+    res.status(201).json({
+      status: 'success',
+      data: {
+        data: document,
+      },
     });
   });
