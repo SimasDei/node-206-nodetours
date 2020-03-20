@@ -23,6 +23,10 @@ router.route('/tour-stats').get(tourController.getTourStats);
 router.route('/monthly-plan/:year?').get(tourController.getMonthyPlan);
 
 router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(tourController.getToursWithin);
+
+router
   .route('/:id')
   .get(tourController.getTour)
   .patch(
