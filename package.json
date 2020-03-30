@@ -8,7 +8,7 @@
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js"
   },
-  "author": "Jonas Schmedtmann",
+  "author": "Simas Dei",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
