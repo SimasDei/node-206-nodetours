@@ -67,12 +67,13 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   const {
     headers: { authorization },
+    cookies,
   } = req;
   let token;
 
   if (authorization && authorization.startsWith('Bearer')) {
     token = authorization.split(' ')[1];
-  }
+  } else if (cookies && cookies.jwt) token = cookies.jwt;
 
   if (!token) return next(new AppError('Please login first', 401));
 
@@ -88,6 +89,27 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   req.user = hydratedUser;
+  next();
+});
+
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  const { cookies } = req;
+
+  if (cookies && cookies.jwt) {
+    const decoded = await promisify(jwt.verify)(cookies.jwt, process.env.JWT_SECRET);
+
+    const hydratedUser = await User.findById(decoded.id);
+    if (!hydratedUser) {
+      return next();
+    }
+
+    if (hydratedUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+
+    res.locals.user = hydratedUser;
+    return next();
+  }
   next();
 });
 
