@@ -2,6 +2,9 @@ extends base
 include _reviewCard
 include _overviewBox
  
+block append scripts
+  script(src='/js/mapbox.js')
+
 block content
   section.section-header
     .header__hero
@@ -27,7 +30,7 @@ block content
         .overview-box__group
           h2.heading-secondary.ma-bt-lg Quick facts
 
-          - const date = tour.startDate[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
+          - const date = tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
           +overviewBox('Next Date', date, 'calendar')
           +overviewBox('Difficulty', tour.difficulty, 'trending-up')
           +overviewBox('Participans', `${tour.maxGroupSize} people`, 'user')
@@ -55,11 +58,10 @@ block content
   section.section-pictures
     each image, i in tour.images
       .picture-box
-        img.picture-box__img(src=`/img/tours/${img}`, alt=`The Park Camper Tour ${i + 1}`),
-        class=`picture-box__img--${i + 1}`
+        img.picture-box__img(src=`/img/tours/${img}`, alt=`The Park Camper Tour ${i + 1}` class=`picture-box__img--${i + 1}`)
 
   section.section-map
-    #map
+    #map(data-locations=`${JSON.stringify(tour.locations)}`)
 
   section.section-reviews
     .reviews
